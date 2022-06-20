@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
-import { Link, Router } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { TokenContext } from '../context/TokenContext'
-import { ReactComponent as Logo } from '../images/Icons/stats-icon.svg'
+import { ReactComponent as Logo } from '../images/Icons/logo-icon.svg'
 import theme from '../theme'
 import LogInButton from './LogInButton'
 

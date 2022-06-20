@@ -30,8 +30,6 @@ const TokenContextProvider = (props) => {
         const hash = window.location.hash
         let _token = window.localStorage.getItem("token")
 
-        console.log(hash)
-
         if (!_token && hash) {
             _token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
 

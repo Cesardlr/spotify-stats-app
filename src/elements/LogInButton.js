@@ -5,10 +5,9 @@ import Button from '../elements/Button'
 
 const LogInButton = () => {
 
-
-    const CLIENT_ID = "ffc88e7cb6f84f0fb4012d26f5fd13b5"
-    const REDIRECT_URI = "http://localhost:3000/"
-    const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
+    const CLIENT_ID = process.env.REACT_APP_CLIENTID
+    const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI
+    const AUTH_ENDPOINT = process.env.REACT_APP_AUTH_ENDPOINT
 
     // The scopes are like the action that you are going to be able to use into your app using the spotify API
     // You can see more here: https://developer.spotify.com/documentation/general/guides/authorization/scopes/
@@ -22,8 +21,6 @@ const LogInButton = () => {
     const tokenContext = useContext(TokenContext);
 
     const _token = tokenContext.token
-
-    console.log(_token)
 
     return (
         <>

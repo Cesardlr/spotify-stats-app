@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import WebFont from 'webfontloader';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import Logo from './images/Icons/stats-icon.svg'
+import Logo from './images/Icons/favicon.png'
 import Home from './components/Home';
 import HomeLogIn from './components/HomeLogIn'
 import TopArtist from './components/TopArtist';
@@ -11,6 +11,8 @@ import Summary from './components/Summary';
 import { NotFoundPage } from './components/NotFoundPage';
 import Header from './elements/Header';
 import { TokenContext } from './context/TokenContext'
+import styled from 'styled-components';
+import theme from './theme';
 
 
 // Private route for if the user wants to access other pages without logging in
@@ -59,7 +61,7 @@ function App() {
     <>
       <Helmet>
         <title>Spotify Stats</title>
-        <link rel="shortcut icon" href={Logo} type="image/x-icon" />
+        <link rel="icon" href={Logo} type="image/x-icon" sizes="16x16" />
       </Helmet>
 
 
