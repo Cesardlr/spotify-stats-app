@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { Link, Router } from 'react-router-dom'
 import styled from 'styled-components'
 import { TokenContext } from '../context/TokenContext'
 import { ReactComponent as Logo } from '../images/Icons/stats-icon.svg'
@@ -27,10 +28,16 @@ const LinkContainer = styled.div`
     justify-content:space-between;
 `
 
-const LinkText = styled.a`
+const LinkText = styled(Link)`
     font-size: 1rem;
     font-weight:600;
     text-align:center;
+    color:white;
+    text-decoration:none;
+
+    &:hover{
+        text-decoration:underline;
+    }
 `
 
 function Header() {
@@ -44,12 +51,13 @@ function Header() {
         <HeaderContainer>
             <LogoIcon />
 
+            {/* This other part of the header will only appear if there's a token */}
             {_token &&
                 <LinkContainer>
-                    <LinkText>TOP TRACKS</LinkText>
-                    <LinkText>TOP ARTISTS</LinkText>
-                    <LinkText>SUMMARY</LinkText>
-                    <LinkText>MY GITHUB</LinkText>
+                    <LinkText to="/">ABOUT</LinkText>
+                    <LinkText to="/top-tracks">TOP TRACKS</LinkText>
+                    <LinkText to="/top-artist">TOP ARTISTS</LinkText>
+                    <LinkText to="/summary">SUMMARY</LinkText>
                 </LinkContainer>
             }
 

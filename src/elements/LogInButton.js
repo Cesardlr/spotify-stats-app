@@ -10,6 +10,15 @@ const LogInButton = () => {
     const REDIRECT_URI = "http://localhost:3000/"
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
 
+    // The scopes are like the action that you are going to be able to use into your app using the spotify API
+    // You can see more here: https://developer.spotify.com/documentation/general/guides/authorization/scopes/
+    const scopes = [
+        "user-top-read",
+        "user-read-recently-played",
+        "user-read-playback-state",
+        "user-modify-playback-state"
+    ];
+
     const tokenContext = useContext(TokenContext);
 
     const _token = tokenContext.token
@@ -25,7 +34,7 @@ const LogInButton = () => {
                     <Button
                         onClick={(e) => {
                             e.preventDefault();
-                            window.location.href = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&show_dialog=true`;
+                            window.location.href = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`;
                         }}
                     >
                         LOG IN

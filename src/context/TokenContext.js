@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 export const TokenContext = React.createContext(
     {
         token: "",
+        loading: true,
         logOut: () => { },
     }
 );
@@ -29,6 +30,8 @@ const TokenContextProvider = (props) => {
         const hash = window.location.hash
         let _token = window.localStorage.getItem("token")
 
+        console.log(hash)
+
         if (!_token && hash) {
             _token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
 
@@ -47,7 +50,6 @@ const TokenContextProvider = (props) => {
     const logOut = () => {
         setToken("")
         window.localStorage.removeItem("token")
-        // setLoading(true)
     }
 
     // This will return the children component and it'll be passed the token state and logout function

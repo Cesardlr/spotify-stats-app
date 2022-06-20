@@ -1,4 +1,4 @@
-import React, { useContext} from 'react';
+import React, { useContext } from 'react';
 import WebFont from 'webfontloader';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
@@ -62,11 +62,11 @@ function App() {
         <link rel="shortcut icon" href={Logo} type="image/x-icon" />
       </Helmet>
 
-      <Header />
 
 
       {/* Adding the routes to the app */}
       <BrowserRouter>
+          <Header />
         <Routes>
 
           <Route
