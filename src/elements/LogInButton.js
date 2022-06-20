@@ -14,6 +14,8 @@ const LogInButton = () => {
 
     const _token = tokenContext.token
 
+    console.log(_token)
+
     return (
         <>
 
@@ -29,6 +31,8 @@ const LogInButton = () => {
                         LOG IN
                     </Button>
                     :
+
+                    // Using the tokenContext logOut function
                     <Button purple onClick={() => tokenContext.logOut()}>LOG OUT</Button>
             }
 

@@ -22,6 +22,7 @@ function getInitialState() {
 const TokenContextProvider = (props) => {
 
     const [token, setToken] = useState(getInitialState);
+    const [loading, setLoading] = useState(true) 
 
     // Use Effect for getting the token form the url and saving it in the local storage and set it to the state
     useEffect(() => {
@@ -37,18 +38,22 @@ const TokenContextProvider = (props) => {
 
         setToken(_token)
 
+        // After we get the token the app isn't loading anymore so we change it to false
+        setLoading(!loading)
+
     }, [])
 
     // Function for logging out
     const logOut = () => {
         setToken("")
         window.localStorage.removeItem("token")
+        // setLoading(true)
     }
 
     // This will return the children component and it'll be passed the token state and logout function
     return (
         <TokenContext.Provider
-            value={{ token: token, logOut: logOut }}
+            value={{ token: token, logOut: logOut, loading:loading }}
         >
             {props.children}
         </TokenContext.Provider>

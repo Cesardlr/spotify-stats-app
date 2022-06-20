@@ -1,6 +1,6 @@
+import React, { useContext} from 'react';
 import WebFont from 'webfontloader';
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import Logo from './images/Icons/stats-icon.svg'
 import Home from './components/Home';
@@ -9,10 +9,43 @@ import TopArtist from './components/TopArtist';
 import TopTracks from './components/TopTracks';
 import Summary from './components/Summary';
 import { NotFoundPage } from './components/NotFoundPage';
-// import PrivateRoute from './elements/PrivateRoute';
-// import { MissingRoute } from './elements/MissingRoute';
-// import Header from './elements/Header';
-// import { TokenProvider } from './context/TokenContext';
+import Header from './elements/Header';
+import { TokenContext } from './context/TokenContext'
+
+
+// Private route for if the user wants to access other pages without logging in
+function PrivateRoute({ children }) {
+  const tokenContext = useContext(TokenContext);
+
+  // If the loading state is true it'll render only a text saying loading... until the app gets the token
+  if (tokenContext.loading) {
+    return <h1>Loading...</h1>
+  }
+  else {
+
+    // Else if there's a token it'll return the children
+    if (tokenContext.token) {
+      return children
+
+      // If there's no token it'll return to /log-in
+    } else {
+      return <Navigate to="/log-in" />;
+    }
+  }
+
+}
+
+// Private route but for if the user wants to access the log in page when it is already logged in
+function LogInPrivateRoute({ children }) {
+  const tokenContext = useContext(TokenContext);
+
+  // If there's a token it'll return to /
+  if (tokenContext.token) {
+    return <Navigate to="/" />;
+  } else {
+    return children
+  }
+}
 
 function App() {
 
@@ -29,13 +62,19 @@ function App() {
         <link rel="shortcut icon" href={Logo} type="image/x-icon" />
       </Helmet>
 
+      <Header />
+
+
+      {/* Adding the routes to the app */}
       <BrowserRouter>
         <Routes>
 
           <Route
             path="/log-in"
             element={
-              <HomeLogIn />
+              <LogInPrivateRoute>
+                <HomeLogIn />
+              </LogInPrivateRoute>
             }
           />
 
@@ -43,18 +82,18 @@ function App() {
           <Route
             path="/top-tracks"
             element={
-              // <PrivateRoute >
-              <TopTracks />
-              // </PrivateRoute>
+              <PrivateRoute >
+                <TopTracks />
+              </PrivateRoute>
             }
           />
 
           <Route
             path="/top-artist"
             element={
-              // <PrivateRoute >
-              <TopArtist />
-              // </PrivateRoute>
+              <PrivateRoute >
+                <TopArtist />
+              </PrivateRoute>
             }
           />
 
@@ -62,30 +101,28 @@ function App() {
           <Route
             path="/summary"
             element={
-              // <PrivateRoute >
-              <Summary />
-              // </PrivateRoute>
+              <PrivateRoute >
+                <Summary />
+              </PrivateRoute>
             }
           />
 
           <Route
-            exact
             path="/"
             element={
-              // <PrivateRoute >
-              <Home />
-              // </PrivateRoute>
+              <PrivateRoute >
+                <Home />
+              </PrivateRoute>
             }
           />
 
           <Route
             path="*"
             element={
-              // <PrivateRoute >
               <NotFoundPage />
-              // </PrivateRoute>
             }
           />
+
         </Routes>
       </BrowserRouter>
     </>
