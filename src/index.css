@@ -8,6 +8,9 @@ body{
   background-color: #191414;
   font-family: 'Montserrat', sans-serif;
   color:#fff;
+  padding:0px 30px;
+  width: 90%;
+  margin: auto;
 }
 
 :root {

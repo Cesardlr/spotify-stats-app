@@ -7,12 +7,13 @@ import theme from '../theme'
 import LogInButton from './LogInButton'
 
 const HeaderContainer = styled.div`
-    width:90%;
+    width:100%;
     margin:auto;
     margin-top:20px;
     display:flex;
     justify-content:space-between;
     align-items:center;
+    margin-bottom: 50px;
 `
 
 const LogoIcon = styled(Logo)`
@@ -22,7 +23,7 @@ const LogoIcon = styled(Logo)`
 `;
 
 const LinkContainer = styled.div`
-    width: 37.5rem; /*600px*/
+    width: 50rem; /*800px*/
     display:flex;
     align-items: center;
     justify-content:space-between;
@@ -43,7 +44,6 @@ const LinkText = styled(Link)`
 function Header() {
 
     const tokenContext = useContext(TokenContext);
-
     const _token = tokenContext.token
 
 
@@ -57,6 +57,7 @@ function Header() {
                     <LinkText to="/">ABOUT</LinkText>
                     <LinkText to="/top-tracks">TOP TRACKS</LinkText>
                     <LinkText to="/top-artist">TOP ARTISTS</LinkText>
+                    <LinkText to="/recently-played">RECENTLY PLAYED</LinkText>
                     <LinkText to="/summary">SUMMARY</LinkText>
                 </LinkContainer>
             }

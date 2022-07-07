@@ -13,6 +13,8 @@ import Header from './elements/Header';
 import { TokenContext } from './context/TokenContext'
 import styled from 'styled-components';
 import theme from './theme';
+import RecentlyPlayed from './components/RecentlyPlayed';
+import Footer from './elements/Footer';
 
 
 // Private route for if the user wants to access other pages without logging in
@@ -68,7 +70,7 @@ function App() {
 
       {/* Adding the routes to the app */}
       <BrowserRouter>
-          <Header />
+        <Header />
         <Routes>
 
           <Route
@@ -99,6 +101,14 @@ function App() {
             }
           />
 
+          <Route
+            path="/recently-played"
+            element={
+              <PrivateRoute >
+                <RecentlyPlayed />
+              </PrivateRoute>
+            }
+          />
 
           <Route
             path="/summary"
@@ -126,6 +136,8 @@ function App() {
           />
 
         </Routes>
+
+        <Footer/>
       </BrowserRouter>
     </>
   );
