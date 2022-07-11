@@ -1,10 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext} from 'react'
 import styled from 'styled-components'
 import { TokenContext } from '../context/TokenContext';
 import axios from 'axios'
 import SideBar from '../elements/SideBar';
 import Artist from '../elements/Artist';
 import SectionTitle from '../elements/SectionTitle';
+import Spinner from '../elements/Spinner';
+import { getTopArtists } from '../utils/getData';
 
 
 // CREATING STYLES
@@ -17,81 +19,53 @@ const ArtistContainer = styled.div`
     display:flex;
     flex-wrap:wrap;
     justify-content: space-between;
-    width:80%;
+    width:${props => props.large ? '100%' : '80%'};
 `
 
 function TopArtists({num, summary}) {
 
   const tokenContext = useContext(TokenContext);
-  const _token = tokenContext.token
+  const topArtists = tokenContext.topArtists
+  const loading = tokenContext.loading
 
-  const [timeRange, setTimeRange] = useState("short_term")
-  const [artists, setArtists] = useState([])
-  const [loading, setLoading] = useState(true)
-  const number = num
+  const artists = num ? topArtists.slice(0, num) : topArtists 
 
-
-  // Use effect for getting the top Artists from spotify api
-  useEffect(() => {
-    async function getTopArtists() {
-      try {
-        const { data } = await axios.get("https://api.spotify.com/v1/me/top/artists",
-
-          {
-            headers: {
-              Authorization: `Bearer ${_token}`,
-              "Content-Type": "application/json",
-            },
-
-            params: {
-              time_range: timeRange,
-              limit: number ? number : 50,
-              offset: 0,
-            }
-
-          })
-
-        // setting up the returned data as the Artists state
-        setArtists(data)
-        setLoading(false)
-      }
-      catch (err) {
-        // The response 401 appears when the token is incorrect or expired, so I delete the token from localStorage and go to log in page
-        if (err.response.status === 401) tokenContext.logOut()
-      }
-    }
-
-    getTopArtists()
-  }, [timeRange])
 
   return (
     <>
 
-      <SectionTitle>Top Artists</SectionTitle>
-      <TopArtistsContainer>
+      {!loading ?
+        <>
+          <SectionTitle>Top Artists</SectionTitle>
+          <TopArtistsContainer>
 
-        {!loading &&
-          <>
-            <ArtistContainer>
-              {
-                artists.items.map((artist, index) => {
-                  return (
-                    <Artist
-                      url={artist.external_urls.spotify}
-                      img={artist.images[0].url}
-                      num={index + 1}
-                      name={artist.name}
-                      key={artist.id}
-                    />
-                  )
-                })
-              }
-            </ArtistContainer>
-            {!summary && <SideBar setTimeRange={setTimeRange} playlist={false} />}
-          </>
-        }
+            <>
+              <ArtistContainer large={summary}>
+                {
+                  artists.map((artist, index) => {
+                    return (
+                      <Artist
+                        url={artist.external_urls.spotify}
+                        img={artist.images[0].url}
+                        num={index + 1}
+                        name={artist.name}
+                        key={artist.id}
+                      />
+                    )
+                  })
+                }
+              </ArtistContainer>
+              
+              {!summary && <SideBar playlist={false} />}
+            </>
 
-      </TopArtistsContainer>
+          </TopArtistsContainer>
+        </>
+
+        :
+
+        !summary && <Spinner />
+      }
     </>
   )
 }

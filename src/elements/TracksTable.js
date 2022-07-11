@@ -25,11 +25,11 @@ const TableTopText = styled.h3`
     margin-bottom:10px;
 `
 
-const TracksTable = ({ songs, at }) => {
+const TracksTable = ({ songs, at, summary }) => {
 
     return (
         // If the at parameter is true, it means I'll use the table for the recently played page, so I don't need the sidebar and I need more space so I set up the large property to true
-        <TableContainer large={at ? true : false}>
+        <TableContainer large={at ? true : summary ? true : false}>
 
             <TableTop>
                 <>

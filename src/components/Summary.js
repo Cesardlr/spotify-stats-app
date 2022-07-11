@@ -1,16 +1,50 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import styled from 'styled-components'
+import { TokenContext } from '../context/TokenContext'
+import SideBar from '../elements/SideBar'
+import Spinner from '../elements/Spinner'
 import RecentlyPlayed from './RecentlyPlayed'
+import SummaryReport from './SummaryReport'
 import TopArtists from './TopArtist'
 import TopTracks from './TopTracks'
 
+
+const SummaryContainer = styled.div`
+  display:flex;
+  `
+const SummaryDataContainer = styled.div`
+width:80%;
+`
+
 function Summary() {
+
+  const tokenContext = useContext(TokenContext);
+  const loading = tokenContext.loading
+
   return (
     <>
 
-    {/* SETTING UP THE COMPONENTS */}
-    <TopTracks num={10}/>
-    <TopArtists num={10}/>
-    <RecentlyPlayed num={10} summary={true}/>
+      {
+        !loading
+          ?
+          <SummaryContainer>
+
+            {/* SETTING UP THE COMPONENTS */}
+            <SummaryDataContainer>
+              <SummaryReport />
+              <TopTracks num={10} summary={true}/>
+              <TopArtists num={10} summary={true}/>
+              <RecentlyPlayed num={10}  />
+            </SummaryDataContainer>
+
+
+            <SideBar />
+          </SummaryContainer>
+          :
+
+          <Spinner />
+      }
+
     </>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const FooterContainer = styled.footer`
-position:absolute;
+  position:absolute;
     padding:2rem;
     left:0;
     right:0;

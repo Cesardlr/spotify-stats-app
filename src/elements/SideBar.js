@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { TokenContext } from '../context/TokenContext'
 import theme from '../theme'
+import { createPlaylist, getUser } from '../utils/getData'
 import Button from './Button'
 
 const SidebarContainer = styled.div`
@@ -18,7 +20,16 @@ const SidebarButtonContainer = styled.div`
     align-items: center;
 `
 
-function SideBar({ setTimeRange, playlist }) {
+function SideBar({ playlist }) {
+
+    const tokenContext = useContext(TokenContext);
+    const token = tokenContext.token
+    const user = tokenContext.user
+    const setTimeRange = tokenContext.setTimeRange
+    const timeRange = tokenContext.timeRange
+
+    // console.log("SB time: ", timeRange)
+
 
     return (
         <SidebarContainer>
@@ -27,7 +38,7 @@ function SideBar({ setTimeRange, playlist }) {
                 <Button sidebar large onClick={() => setTimeRange("medium_term")}>LAST 6 MONTHS</Button>
                 <Button sidebar large onClick={() => setTimeRange("long_term")}>ALL TIME</Button>
 
-                {playlist && <Button large playlist purple>CREATE PLAYLIST</Button>}
+                {playlist && <Button large playlist purple onClick={() => createPlaylist(tokenContext, token, user.id)}>CREATE PLAYLIST</Button>}
             </SidebarButtonContainer>
         </SidebarContainer>
     )

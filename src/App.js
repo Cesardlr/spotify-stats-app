@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import theme from './theme';
 import RecentlyPlayed from './components/RecentlyPlayed';
 import Footer from './elements/Footer';
+import Spinner from './elements/Spinner';
 
 
 // Private route for if the user wants to access other pages without logging in
@@ -23,7 +24,7 @@ function PrivateRoute({ children }) {
 
   // If the loading state is true it'll render only a text saying loading... until the app gets the token
   if (tokenContext.loading) {
-    return <h1>Loading...</h1>
+    return <Spinner />
   }
   else {
 

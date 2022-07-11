@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { getRecentTracks, getTopArtists, getTopTracks, getUser } from "../utils/getData";
 
 // token is the state
 // logOut is the function for deleting the token state
@@ -9,6 +10,12 @@ export const TokenContext = React.createContext(
         token: "",
         loading: true,
         logOut: () => { },
+        timeRange: "",
+        setTimeRange: () => { },
+        topTracks: [],
+        topArtists: [],
+        recentTracks: [],
+        user: [],
     }
 );
 
@@ -22,8 +29,22 @@ function getInitialState() {
 // THIS WILL BE THE WRAPPER OF THE APP IN THE INDEX.JS FILE
 const TokenContextProvider = (props) => {
 
+
     const [token, setToken] = useState(getInitialState);
-    const [loading, setLoading] = useState(true) 
+    const [loading, setLoading] = useState(true)
+    const [timeRange, setTimeRange] = useState("short_term")
+
+    const [topTracks, setTracks] = useState([])
+    const [topArtists, setArtists] = useState([])
+    const [recentTracks, setRecentTracks] = useState([])
+    const [user, setUser] = useState([])
+
+
+    // Function for logging out
+    const logOut = () => {
+        setToken("")
+        window.localStorage.removeItem("token")
+    }
 
     // Use Effect for getting the token form the url and saving it in the local storage and set it to the state
     useEffect(() => {
@@ -39,21 +60,55 @@ const TokenContextProvider = (props) => {
 
         setToken(_token)
 
-        // After we get the token the app isn't loading anymore so we change it to false
-        setLoading(!loading)
+
+
+
+        getUser(logOut, token)
+            .then(res => setUser(res))
 
     }, [])
 
-    // Function for logging out
-    const logOut = () => {
-        setToken("")
-        window.localStorage.removeItem("token")
-    }
+
+    // GETTING THE DATA FROM SPOTIFY API WITH THE UTILS/FUNCTIONS
+    useEffect(() => {
+
+        getRecentTracks(logOut, token)
+            .then(res => setRecentTracks(res))
+
+        getTopArtists(timeRange, logOut, token)
+            .then(res => setArtists(res.items))
+
+        getTopTracks(timeRange, logOut, token)
+            .then(res => setTracks(res))
+            .then(() => setLoading(false))
+
+    }, [timeRange])
+
+    // console.log('token: ', token)
+    // console.log('logOut: ', logOut)
+    // console.log('loading: ', loading)
+    // console.log('topTracks: ', topTracks)
+    // console.log('topArtists: ', topArtists)
+    console.log('recentTracks: ', recentTracks)
+    // console.log('user: ', user)
+    // console.log('timeRange: ', timeRange)
 
     // This will return the children component and it'll be passed the token state and logout function
     return (
         <TokenContext.Provider
-            value={{ token: token, logOut: logOut, loading:loading }}
+            value={
+                {
+                    token: token,
+                    logOut: logOut,
+                    loading: loading,
+                    topTracks: topTracks,
+                    topArtists: topArtists,
+                    recentTracks: recentTracks,
+                    user: user,
+                    timeRange: timeRange,
+                    setTimeRange: setTimeRange
+                }
+            }
         >
             {props.children}
         </TokenContext.Provider>
