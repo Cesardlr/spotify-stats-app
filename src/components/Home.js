@@ -13,6 +13,10 @@ const SectionButtonContainer = styled.div`
     width: 40%;
     margin:auto;
     margin-bottom:2rem;
+
+    @media screen and (max-width: ${theme.large}){ 
+        width:70%;
+    }
 `
 
 const SectionButtonContentContainer = styled.div`
@@ -21,6 +25,9 @@ const SectionButtonContentContainer = styled.div`
   justify-content:space-around;
   width:50%;
   margin: 0 auto;
+  @media screen and (max-width: ${theme.large}){ 
+        width:80%;
+  }
 `
 
 const SectionButton = styled(Link)`
@@ -50,11 +57,9 @@ const SectionButton = styled(Link)`
         }
     }
 
-    @media(max-width: 60rem){ /* 950px */
-        width: 5rem; /* 80px */
-        height: 2.5rem; /* 40px */
-        line-height: 2.5rem; /* 40px */
-    }
+    @media screen and (max-width: ${theme.large}){ 
+    width:100%;
+}
 `
 
 
@@ -66,6 +71,7 @@ const StyledIcon = [
   path {
       fill: white;
   }
+
 `
 ]
 

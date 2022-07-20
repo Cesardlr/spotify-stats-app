@@ -7,7 +7,7 @@ const Button = styled.button`
     font-family:'Montserrat';
     font-size: .88rem; /* 14px */
     outline:none;
-    background: ${props => props.purple ? theme.purple : theme.green};
+    background: ${props => props.purple ? theme.purple : props.blue ? theme.blue : theme.green};
     color: white;
     font-weight: 600;
     border:none;
@@ -21,11 +21,7 @@ const Button = styled.button`
         color: black;
     }
 
-    @media(max-width: 60rem){ /* 950px */
-        width: 5rem; /* 80px */
-        height: 2.5rem; /* 40px */
-        line-height: 2.5rem; /* 40px */
-    }
+
 `;
 
 export default Button

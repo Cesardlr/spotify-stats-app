@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getRecentTracks, getTopArtists, getTopTracks, getUser } from "../utils/getData";
+import { getPlaylists, getRecentTracks, getTopArtists, getTopTracks, getUser } from "../utils/getData";
 
 // token is the state
 // logOut is the function for deleting the token state
@@ -16,6 +16,7 @@ export const TokenContext = React.createContext(
         topArtists: [],
         recentTracks: [],
         user: [],
+        playlists: [],
     }
 );
 
@@ -60,37 +61,40 @@ const TokenContextProvider = (props) => {
 
         setToken(_token)
 
-
-
-
         getUser(logOut, token)
             .then(res => setUser(res))
 
-    }, [])
+    }, [token])
 
 
     // GETTING THE DATA FROM SPOTIFY API WITH THE UTILS/FUNCTIONS
     useEffect(() => {
-
-        getRecentTracks(logOut, token)
-            .then(res => setRecentTracks(res))
 
         getTopArtists(timeRange, logOut, token)
             .then(res => setArtists(res.items))
 
         getTopTracks(timeRange, logOut, token)
             .then(res => setTracks(res))
+
+        getRecentTracks(logOut, token)
+            .then(res => setRecentTracks(res))
             .then(() => setLoading(false))
 
-    }, [timeRange])
+        // Here I added a second dependency, it'll execute either one changes. 
+    }, [timeRange, token])
+
+    // useEffect(() => {
+
+    //     // Here I added a second dependency, it'll execute either one changes. 
+    // }, [user])
 
     // console.log('token: ', token)
     // console.log('logOut: ', logOut)
+    // console.log('user: ', user)
     // console.log('loading: ', loading)
     // console.log('topTracks: ', topTracks)
     // console.log('topArtists: ', topArtists)
-    console.log('recentTracks: ', recentTracks)
-    // console.log('user: ', user)
+    // console.log('recentTracks: ', recentTracks)
     // console.log('timeRange: ', timeRange)
 
     // This will return the children component and it'll be passed the token state and logout function
@@ -106,7 +110,7 @@ const TokenContextProvider = (props) => {
                     recentTracks: recentTracks,
                     user: user,
                     timeRange: timeRange,
-                    setTimeRange: setTimeRange
+                    setTimeRange: setTimeRange,
                 }
             }
         >

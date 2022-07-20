@@ -5,7 +5,14 @@ const theme = {
     green: '#1DB954',
     purple: '#AD00FF',
     yellow: '#CDF757',
-    white: '#FFFFFF'
+    white: '#FFFFFF',
+    blue: '#1363DF',
+
+    // Screen Sizes for querys
+    small: '600px',
+    medium: '800px',
+    large: '1010px',
+
 }
 
 export default theme;

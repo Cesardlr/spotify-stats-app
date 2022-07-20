@@ -10,8 +10,18 @@ const InfoBlocksContainer = styled.div`
     width:100%;
     display:flex;
     justify-content:space-between;
-    align-items: center;
+    align-items: top;
     margin-top:1rem;
+
+    @media screen and (max-width: ${theme.large}){ 
+        width:100%;
+        flex-wrap:wrap;
+        margin:0 auto;
+    }
+
+    @media screen and (max-width: ${theme.small}){
+        width:100%;
+    }
 `
 
 const InfoBlockDiv = styled.div`
@@ -21,6 +31,15 @@ const InfoBlockDiv = styled.div`
     padding:1rem;
     border: 2px solid white;
     border-radius:5px;
+
+    @media screen and (max-width: ${theme.large}){ 
+        width:45%;
+        margin:1rem;
+    }
+
+    @media screen and (max-width: ${theme.small}){
+        width:100%;
+    }
 `
 
 const StyledIcon = [`
@@ -56,12 +75,12 @@ const InfoBlock = ({ icon, title, text }) => {
             {
                 icon === "stats" ?
                     <StyledStatsIcon /> :
-                icon === "playlist" ?
-                    <StyledPlaylistIcon /> :
-                icon === "recently" ?
-                    <StyledRecentlyPlayedIcon /> :
-                icon === "happy" &&
-                    <StyledHappyFaceIcon />
+                    icon === "playlist" ?
+                        <StyledPlaylistIcon /> :
+                        icon === "recently" ?
+                            <StyledRecentlyPlayedIcon /> :
+                            icon === "happy" &&
+                            <StyledHappyFaceIcon />
             }
             <InfoBlockTitle>{title}</InfoBlockTitle>
             <InfoBlockText>{text}</InfoBlockText>

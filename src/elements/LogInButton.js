@@ -15,7 +15,11 @@ const LogInButton = ({ mainPageText }) => {
         "user-top-read",
         "user-read-recently-played",
         "user-read-playback-state",
-        "user-modify-playback-state"
+        "user-modify-playback-state",
+        // "playlist-modify-public",
+        // "playlist-modify-private",
+        "playlist-read-collaborative",
+        "playlist-read-private",
     ];
 
     const tokenContext = useContext(TokenContext);

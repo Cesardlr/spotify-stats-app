@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { TokenContext } from '../context/TokenContext'
 import SideBar from '../elements/SideBar'
 import Spinner from '../elements/Spinner'
+import PublicPlaylists from './PublicPlaylists'
 import RecentlyPlayed from './RecentlyPlayed'
 import SummaryReport from './SummaryReport'
 import TopArtists from './TopArtist'
@@ -35,8 +36,8 @@ function Summary() {
               <TopTracks num={10} summary={true}/>
               <TopArtists num={10} summary={true}/>
               <RecentlyPlayed num={10}  />
+              <PublicPlaylists summary={true} />
             </SummaryDataContainer>
-
 
             <SideBar />
           </SummaryContainer>

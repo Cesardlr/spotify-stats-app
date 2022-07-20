@@ -24,6 +24,7 @@ async function getTopArtists(timeRange, logOut, token) {
     catch (err) {
         // The response 401 appears when the token is incorrect or expired, so I delete the token from localStorage and go to log in page
         if (err.response.status === 401) logOut()
+        console.log('ERROR: ', err)
     }
 }
 
@@ -51,12 +52,12 @@ async function getTopTracks(timeRange, logOut, token) {
     }
     catch (err) {
         // The response 401 appears when the token is incorrect or expired, so I delete the token from localStorage and go to log in page
-        // if (err.response.status === 401) logOut()
-        console.log(err)
+        if (err.response.status === 401) logOut()
+        console.log('ERROR: ', err)
     }
 }
 
-async function getRecentTracks( logOut, token) {
+async function getRecentTracks(logOut, token) {
     try {
         const { data } = await axios.get("https://api.spotify.com/v1/me/player/recently-played",
 
@@ -78,6 +79,8 @@ async function getRecentTracks( logOut, token) {
     catch (err) {
         // The response 401 appears when the token is incorrect or expired, so I delete the token from localStorage and go to log in page
         if (err.response.status === 401) logOut()
+
+        console.log('ERROR: ', err)
     }
 }
 
@@ -97,22 +100,24 @@ async function getUser(logOut, token) {
     catch (err) {
         // The response 401 appears when the token is incorrect or expired, so I delete the token from localStorage and go to log in page
         if (err.response.status === 401) logOut()
+
+        console.log('ERROR: ', err)
     }
 }
 
-async function createPlaylist(logOut, token, user_id) {
+async function getPlaylists(logOut, token, user_id) {
     try {
-        const { data } = await axios.post(`https://api.spotify.com/v1/users/${user_id}/playlists`,
+        const { data } = await axios.get(`https://api.spotify.com/v1/users/${user_id}/playlists`,
 
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                params: {
-                    "name": "Spotify Stats Playlist",
-                    "description": "Playlist created from the spotify-stats.com app",
-                    "public": true
+
+                params:{
+                    limit: 10,
+                    offset: 0,
                 }
             })
 
@@ -121,8 +126,89 @@ async function createPlaylist(logOut, token, user_id) {
     catch (err) {
         // The response 401 appears when the token is incorrect or expired, so I delete the token from localStorage and go to log in page
         if (err.response.status === 401) logOut()
+
+        console.log('ERROR: ', err)
+    }
+}
+
+// POSTS
+
+async function createPlaylist(logOut, token, user_id, timeRange, tracksUris) {
+    try {
+
+        // SETTIGN TIME RANGE TEXT TO USE IN THE NAME AND DESCRIPTION OF PLAYLIST
+        let time = timeRange === "short_term" ? 'last month' : "medium_term" ? 'last 6 months' : "long_term" && 'all time'
+
+        // GETTING TODAYS DATE
+        var today = new Date();
+        var date =
+            today.getDate()
+            + '/' +
+            // This is for adding a "0" in the one digit day numbers
+            ((today.getMonth() + 1).toString().length === 2 ? (today.getMonth() + 1) : '0' + (today.getMonth() + 1))
+            + '/' +
+            today.getFullYear();
+
+            
+
+        // CREATING PLAYLIST
+        fetch(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${token}`
+            },
+
+            body:
+                JSON.stringify({
+                    name: `Top Tracks (${date} - ${time}) `,
+                    description: `Your favorite tracks ${time} as of ${date}. Created by statsforspotify.com`,
+                    public: true
+                }),
+        })
+            .then((res) => res.json())
+            .then(jsonResponse => {
+                const playlistId = jsonResponse.id;
+
+                // ADDING TRACKS TO THE PLAYLIST
+                addTracksToPlaylist(logOut, token, tracksUris, playlistId)
+            });
+
+    }
+    catch (err) {
+        // The response 401 appears when the token is incorrect or expired, so I delete the token from localStorage and go to log in page
+        if (err.response.status === 401) logOut()
+        console.log(err)
+    }
+}
+
+async function addTracksToPlaylist(logOut, token, trackUris, playlist_id) {
+    try {
+        fetch(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks?position=0`, {
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${token}`
+            },
+
+            body: JSON.stringify({
+                "uris": trackUris,
+                "position": 0
+            })
+        })
+            .then((res) => res.json())
+        // .then(res => console.log(res))
+
+    }
+    catch (err) {
+        // The response 401 appears when the token is incorrect or expired, so I delete the token from localStorage and go to log in page
+        // if (err.response.status === 401) logOut()
+        console.log(err)
     }
 }
 
 
-export { getTopArtists, getTopTracks, getRecentTracks, getUser, createPlaylist }
+
+export { getTopArtists, getTopTracks, getRecentTracks, getUser, createPlaylist, getPlaylists }

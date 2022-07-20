@@ -27,9 +27,15 @@ function SideBar({ playlist }) {
     const user = tokenContext.user
     const setTimeRange = tokenContext.setTimeRange
     const timeRange = tokenContext.timeRange
+    const topTracks = tokenContext.topTracks
+    
+    // GETTING TRACK URIS FROM TOP TRACKS
+    const tracksUris = topTracks.reduce((acc, el)=> {
+        acc.push(el.uri)
+        return acc
+    }, [])
 
-    // console.log("SB time: ", timeRange)
-
+    // const [created, setCreated] = useState(false)
 
     return (
         <SidebarContainer>
@@ -38,7 +44,29 @@ function SideBar({ playlist }) {
                 <Button sidebar large onClick={() => setTimeRange("medium_term")}>LAST 6 MONTHS</Button>
                 <Button sidebar large onClick={() => setTimeRange("long_term")}>ALL TIME</Button>
 
-                {playlist && <Button large playlist purple onClick={() => createPlaylist(tokenContext, token, user.id)}>CREATE PLAYLIST</Button>}
+                {playlist &&
+
+                    // created
+
+                    // ?
+                    <Button large playlist purple
+                        onClick={() => {
+                            createPlaylist(tokenContext.logOut, token, user.id, timeRange, tracksUris)
+                        }}>
+
+                        CREATE PLAYLIST
+                    </Button>
+
+                    // :
+                    // <Button large playlist blue
+                    //     onClick={() => {
+                    //         createPlaylist(tokenContext.logOut, token, user.id)
+                    //         setCreated(true)
+                    //     }}>
+
+                    //     VIEW PLAYLIST
+                    // </Button>
+                }
             </SidebarButtonContainer>
         </SidebarContainer>
     )

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { TokenContext } from '../context/TokenContext';
 import axios from 'axios'
 import SideBar from '../elements/SideBar';
-import Artist from '../elements/Artist';
+import ImageBlock from '../elements/ImageBlock';
 import SectionTitle from '../elements/SectionTitle';
 import Spinner from '../elements/Spinner';
 import { getTopArtists } from '../utils/getData';
@@ -44,7 +44,7 @@ function TopArtists({num, summary}) {
                 {
                   artists.map((artist, index) => {
                     return (
-                      <Artist
+                      <ImageBlock
                         url={artist.external_urls.spotify}
                         img={artist.images[0].url}
                         num={index + 1}

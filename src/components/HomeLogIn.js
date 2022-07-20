@@ -10,6 +10,10 @@ const HeroContainer = styled.div`
   width:80%;
   margin: 80px auto;
   text-align:center;
+
+  @media screen and (max-width: ${theme.small}){ /* 950px */
+        width:100%;
+  }
 `
 
 const HeroTitle = styled.h1`
@@ -17,6 +21,13 @@ const HeroTitle = styled.h1`
   color:${theme.green};
   text-align:center;
   margin:20px auto;
+
+  @media screen and (max-width: ${theme.large}){ /* 950px */
+        font-size: 3rem;
+  }
+  @media screen and (max-width: ${theme.small}){ /* 950px */
+        font-size: 2rem;
+  }
 `
 
 const HeroText = styled.p`
